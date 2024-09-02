@@ -3,12 +3,57 @@ package com.curso.reactive.curso_reactive;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @SpringBootApplication
 public class CursoReactiveApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursoReactiveApplication.class, args);
-		BankAccount account = new BankAccount();
+        /* Desde aquí se Ejecuta el taller #1*/
+        List<Persona> personas = Arrays.asList(
+                new Persona("Juan", 25, "Masculino"),
+                new Persona("María", 30, "Femenino"),
+                new Persona("Pedro", 40, "Masculino"),
+                new Persona("Ana", 20, "Femenino")
+        );
+        //1 Filtrar personas mayores de 25 años
+        List<Persona> mayores = personas.stream().filter(persona -> persona.getEdad()>25).collect(Collectors.toList());
+         System.out.println(mayores);
+        //2 Obtener una lista con los nombres de las personas.
+        List<String> nombres = personas.stream().map(persona -> persona.getNombre()).collect(Collectors.toList());
+        System.out.println(nombres);
+        //3 Obtener la suma de las edades de todas las personas.
+        int sumaEdades = personas.stream()
+                .mapToInt(Persona::getEdad)
+                .sum();
+        System.out.println(sumaEdades);
+        //4 Contar la cantidad de personas de cada género.
+        Map<String, Long> cantidadPorGenero = personas.stream()
+                .collect(Collectors.groupingBy(Persona::getGenero, Collectors.counting()));
+        System.out.println(cantidadPorGenero);
+
+        //5 Calcular el promedio de edades de las personas.
+        double promedioEdades = personas.stream()
+                .mapToInt(Persona::getEdad)
+                .average()
+                .orElse(0.0);
+        System.out.println(promedioEdades);
+        //6 Encontrar la persona de mayor edad.
+
+        Persona personaMayorEdad = personas.stream()
+                .max(Comparator.comparingInt(Persona::getEdad))
+                .orElse(null);
+        System.out.println(personaMayorEdad);
+
+        //-----------------------------------------------------------------------------------------------------------//
+
+        /* Desde aquí se Ejecuta el taller #2*/
+        BankAccount account = new BankAccount();
 		account.addTransaction(new Transaction(100, "deposit", "2024-05-13"));
 		account.addTransaction(new Transaction(50, "withdrawal", "2024-05-14"));
 		account.addTransaction(new Transaction(200, "deposit", "2024-05-15"));
