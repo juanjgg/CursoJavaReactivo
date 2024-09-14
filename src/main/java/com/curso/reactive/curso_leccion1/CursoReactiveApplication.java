@@ -1,4 +1,4 @@
-package com.curso.reactive.curso_reactive;
+package com.curso.reactive.curso_leccion1;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
